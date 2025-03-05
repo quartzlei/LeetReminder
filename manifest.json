@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LeetCode AC 记录器",
-  "version": "1.0",
+  "version": "1.1.0",
   "permissions": ["storage", "alarms"],
   "host_permissions": ["https://leetcode.com/*"],
   "content_scripts": [{
