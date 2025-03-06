@@ -140,6 +140,12 @@ function getProblemInfo() {
   let url = getProblemUrl()
   return { id, title, difficulty, url };
 }
+//get local time
+function getLocalDateString() {
+  const now = new Date();
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+    .toISOString().split('T')[0];
+}
 
 // ====== 提交结果监听 ======
 function checkSubmission() {
@@ -158,9 +164,11 @@ function checkSubmission() {
         type: "NEW_AC",
         data: {
           ...problem,
-          date: new Date().toISOString().split('T')[0],
-          reviewCount: 0,
-          nextReviewDate: new Date().toISOString().split('T')[0]
+          //date: new Date().toISOString().split('T')[0],
+          date: getLocalDateString(),
+          reviewCount: 0 //intital review count
+          //nextReviewDate: new Date().toISOString().split('T')[0]
+          //nextReviewDate: getLocalDateString()
         }
       });
     }

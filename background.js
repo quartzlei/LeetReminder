@@ -1,3 +1,16 @@
+// Function to calculate the next review date based on the Spaced Repetition Algorithm
+function calcNextReview(reviewCount) {
+  const intervals = [1, 3, 7, 14, 30]; // Dynamic intervals based on past reviews
+  return intervals[reviewCount] || 30; // Default max interval
+}
+
+//calculate the next review date
+function getNextReviewDate(problem) {
+  const baseDate = new Date(problem.date); //first AC date stored locally
+  baseDate.setDate(baseDate.getDate() + calcNextReview(problem.reviewCount));
+  return baseDate.toISOString().split('T')[0];
+}
+
 // Listen for messages from content scripts (Newly accepted LeetCode problems)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "NEW_AC") {
@@ -10,7 +23,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         request.data.reviewCount = 0;
 
         // 🚀 First review should be tomorrow (1 day later)
-        request.data.nextReviewDate = new Date(Date.now() + 1 * 86400000).toISOString().split('T')[0];
+        request.data.nextReviewDate = new Date(Date.now() + calcNextReview(0) * 86400000).toISOString().split('T')[0];
 
         chrome.storage.local.set({ [request.data.title]: request.data }, () => {
           console.log(`✅ Saved problem: ${request.data.title}, First Review on: ${request.data.nextReviewDate}`);
@@ -21,11 +34,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-// Function to calculate the next review date based on the Spaced Repetition Algorithm
-function calcNextReview(reviewCount) {
-  const intervals = [1, 3, 7, 14, 30]; // Dynamic intervals based on past reviews
-  return intervals[reviewCount] || 30; // Default max interval
-}
 
 // Schedule a daily check for problems to review
 chrome.alarms.create('dailyCheck', { periodInMinutes: 1440 }); // 1440 minutes = 1 day
@@ -50,12 +58,14 @@ chrome.alarms.onAlarm.addListener(() => {
 
         // Update review count and next review date
         problem.reviewCount += 1;
-        problem.lastReviewed = today;
-        problem.nextReviewDate = new Date(Date.now() + calcNextReview(problem.reviewCount) * 86400000)
-          .toISOString().split('T')[0];
+        //problem.lastReviewed = today;
+        //problem.nextReviewDate = new Date(Date.now() + calcNextReview(problem.reviewCount) * 86400000)
+          //.toISOString().split('T')[0];
 
+        //chrome.storage.local.set({ [title]: problem }, () => {
+          //console.log(`🔄 Updated review date for: ${title}, Next Review: ${problem.nextReviewDate}`);
         chrome.storage.local.set({ [title]: problem }, () => {
-          console.log(`🔄 Updated review date for: ${title}, Next Review: ${problem.nextReviewDate}`);
+          console.log(`🔄 Updated review count for: ${title}, Next Review: ${getNextReviewDate(problem)}`);
         });
       }
     });
