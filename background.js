@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       if (!existing) { // If it's a new problem
         request.data.reviewCount = 0;
-        request.data.lastReviewed = new Date().toISOString().split('T')[0]; // Store last reviewed date
+        //request.data.lastReviewed = new Date().toISOString().split('T')[0]; // Store last reviewed date
         request.data.nextReviewDate = new Date().toISOString().split('T')[0]; // Start review today
 
         chrome.storage.local.set({ [request.data.title]: request.data }, () => {
