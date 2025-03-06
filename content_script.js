@@ -80,7 +80,42 @@ function getProblemDifficultyFallback() {
   }
 }
 
-// ====== 其余代码保持不变 ======
+//题目编号
+function getQuestionId() {
+  try {
+    // Select all <a> tags that contain problem links
+    const problemLinks = document.querySelectorAll('a[href^="/problems/"]');
+
+    for (let link of problemLinks) {
+      const text = link.innerText.trim(); // Get the visible text
+      const match = text.match(/^(\d+)\.\s*(.+)$/); // Regex to extract "ID. Title"
+
+      if (match) {
+        return match[1]; // Return the extracted question ID
+      }
+    }
+  } catch (e) {
+    console.error("❌ Failed to extract questionId:", e);
+  }
+
+  return "???"; // Default if extraction fails
+}
+
+//url of question page
+function getProblemUrl() {
+  try {
+    // Select the meta tag with property="og:url"
+    const metaTag = document.querySelector('meta[property="og:url"]');
+
+    if (metaTag) {
+      return metaTag.content.trim(); // Extract and return the URL
+    }
+  } catch (e) {
+    console.error("❌ Failed to extract problem URL:", e);
+  }
+
+  return window.location.href; // Fallback: Use current page URL
+}
 
 
 // ====== 安全获取题目信息 ======
@@ -101,8 +136,9 @@ function getProblemInfo() {
   } catch (e) {
     console.warn('[扩展] 难度获取失败:', e);
   }
-
-  return { title, difficulty };
+  let id = getQuestionId();
+  let url = getProblemUrl()
+  return { id, title, difficulty, url };
 }
 
 // ====== 提交结果监听 ======

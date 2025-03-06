@@ -35,7 +35,8 @@ chrome.storage.local.get(null, (data) => {
       checkbox.checked = problem.lastReviewed === today; // If reviewed today, keep it checked
 
       const label = document.createElement('label');
-      label.textContent = problem.title;
+      //label.textContent = problem.title;
+      label.innerHTML = `<a href="${problem.url}" target="_blank" class="questionlink">[${problem.id}] ${problem.title}</a>`;
       const difficultyTag = document.createElement('span');
       difficultyTag.className = `difficulty ${problem.difficulty.toLowerCase()}`;
       difficultyTag.textContent = problem.difficulty;

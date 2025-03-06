@@ -1,8 +1,10 @@
 // Listen for messages from content scripts (Newly accepted LeetCode problems)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === "NEW_AC") {
-    chrome.storage.local.get([request.data.title], (result) => {
-      const existing = result[request.data.title];
+    //chrome.storage.local.get([request.data.title], (result) => {
+      chrome.storage.local.get([request.data.id], (result) => {
+      //const existing = result[request.data.title];
+      const existing = result[request.data.id];
 
       if (!existing) { // If it's a new problem
         request.data.reviewCount = 0;
