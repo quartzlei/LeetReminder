@@ -6,16 +6,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       if (!existing) { // If it's a new problem
         request.data.reviewCount = 0;
-        //request.data.lastReviewed = new Date().toISOString().split('T')[0]; // Store last reviewed date
-        request.data.nextReviewDate = new Date().toISOString().split('T')[0]; // Start review today
+
+        // 🚀 First review should be tomorrow (1 day later)
+        request.data.nextReviewDate = new Date(Date.now() + 1 * 86400000).toISOString().split('T')[0];
 
         chrome.storage.local.set({ [request.data.title]: request.data }, () => {
-          console.log(`✅ Saved problem: ${request.data.title}`);
+          console.log(`✅ Saved problem: ${request.data.title}, First Review on: ${request.data.nextReviewDate}`);
         });
       }
     });
   }
 });
+
 
 // Function to calculate the next review date based on the Spaced Repetition Algorithm
 function calcNextReview(reviewCount) {
