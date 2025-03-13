@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <style>
     body {
       width: 320px;
       padding: 15px;
       font-family: 'Inter', Arial, sans-serif;
-      background-color: #F7FAFC; /* Light Mode */
+      background-color: #F7FAFC;
+      /* Light Mode */
       color: #2D3748;
+      padding-bottom: 60px;
     }
+
     h3 {
       color: #FFA116;
       font-size: 18px;
       margin-bottom: 10px;
     }
-    select, button {
+
+    select,
+    button {
       width: 100%;
       padding: 8px;
       margin: 5px 0;
@@ -23,10 +29,12 @@
       background: white;
       font-size: 14px;
     }
+
     ul {
       list-style: none;
       padding: 0;
     }
+
     li {
       display: flex;
       align-items: center;
@@ -38,19 +46,23 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       transition: background 0.3s;
     }
+
     li:hover {
       background: #EDF2F7;
     }
+
     input[type="checkbox"] {
       transform: scale(1.2);
       margin-right: 10px;
     }
+
     .group-title {
       font-weight: bold;
       font-size: 14px;
       margin-top: 10px;
       color: #718096;
     }
+
     .difficulty {
       font-size: 12px;
       font-weight: bold;
@@ -63,13 +75,52 @@
       color: black;
       text-decoration: none;
     }
-    .easy { background: #68D391; color: white; }
-    .medium { background: #F6AD55; color: white; }
-    .hard { background: #E53E3E; color: white; }
+
+    .easy {
+      background: #68D391;
+      color: white;
+    }
+
+    .medium {
+      background: #F6AD55;
+      color: white;
+    }
+
+    .hard {
+      background: #E53E3E;
+      color: white;
+    }
+
+    .fixed-button-container {
+      position: fixed;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      background: white;
+      padding: 10px 0;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      border-radius: 15px; //round corner
+    }
+
+    .fixed-button-container button {
+      width: 80%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #CBD5E0;
+      background: #FFA116;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
-  <h3>LeetCode Review Tracker</h3>
+  <h3>LeetReminder</h3>
 
   <label for="filterDifficulty">Filter by Difficulty:</label>
   <select id="filterDifficulty">
@@ -95,7 +146,10 @@
   <h4 class="group-title"> Reviewed</h4>
   <ul id="reviewedList"></ul>
 
-  <button id="viewList">Check All Questions</button>
+  <div class="fixed-button-container">
+    <button id="viewList">Check All Questions</button>
+  </div>
   <script src="popup.js"></script>
 </body>
+
 </html>
