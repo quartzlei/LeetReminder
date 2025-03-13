@@ -29,6 +29,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           console.log(`✅ Saved problem: ${request.data.title}, First Review on: ${request.data.nextReviewDate}`);
         });
       }
+      
+      else {
+        // ✅ Already exists, update review date
+        existing.reviewCount += 1;
+        existing.lastReviewed = new Date().toISOString().split('T')[0]; // Mark it as reviewed today
+        existing.nextReviewDate = new Date(Date.now() + calcNextReview(existing.reviewCount) * 86400000).toISOString().split('T')[0];
+
+        chrome.storage.local.set({ [request.data.id]: existing }, () => {
+          console.log(`🔄 Updated problem: ${request.data.title}, Next Review on: ${existing.nextReviewDate}`);
+        });
+      }
+    
     });
   }
 });
